@@ -1,0 +1,123 @@
+`timescale 1ns/1ps
+module ATM_tb;
+    reg clk, reset;
+    reg card_insert, pin_submit;
+    reg [3:0] pin_entry;
+    reg menu_valid;
+    reg [2:0] menu_choice;
+    reg amount_valid;
+    reg [7:0] amount;
+    reg new_pin_valid;
+    reg [3:0] new_pin;
+    reg cancel;
+
+    wire pin_prompt, menu_display, balance_display;
+    wire dispense_cash, deposit_done, pin_changed, transaction_done;
+    wire insufficient_funds, invalid_amount, card_eject, cancelled;
+    wire [7:0] balance, cash_dispensed;
+    wire [1:0] pin_attempts_left;
+    wire [3:0] current_state;
+
+    ATM dut (
+        .clk(clk), .reset(reset),
+        .card_insert(card_insert), .pin_submit(pin_submit), .pin_entry(pin_entry),
+        .menu_valid(menu_valid), .menu_choice(menu_choice),
+        .amount_valid(amount_valid), .amount(amount),
+        .new_pin_valid(new_pin_valid), .new_pin(new_pin), .cancel(cancel),
+        .pin_prompt(pin_prompt), .menu_display(menu_display),
+        .balance_display(balance_display), .dispense_cash(dispense_cash),
+        .deposit_done(deposit_done), .pin_changed(pin_changed),
+        .transaction_done(transaction_done), .insufficient_funds(insufficient_funds),
+        .invalid_amount(invalid_amount), .card_eject(card_eject), .cancelled(cancelled),
+        .balance(balance), .cash_dispensed(cash_dispensed),
+        .pin_attempts_left(pin_attempts_left), .current_state(current_state)
+    );
+
+    // 10 ns clock
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    // Helper tasks: inputs are pulsed for one clock interval
+    task submit_pin(input [3:0] value);
+        begin
+            @(negedge clk); pin_entry=value; pin_submit=1;
+            @(negedge clk); pin_submit=0;
+        end
+    endtask
+
+    task choose(input [2:0] choice);
+        begin
+            @(negedge clk); menu_choice=choice; menu_valid=1;
+            @(negedge clk); menu_valid=0;
+        end
+    endtask
+
+    task enter_amount(input [7:0] value);
+        begin
+            @(negedge clk); amount=value; amount_valid=1;
+            @(negedge clk); amount_valid=0;
+        end
+    endtask
+
+    task change_pin(input [3:0] value);
+        begin
+            @(negedge clk); new_pin=value; new_pin_valid=1;
+            @(negedge clk); new_pin_valid=0;
+        end
+    endtask
+
+    initial begin
+        reset=1; card_insert=0; pin_submit=0; pin_entry=0;
+        menu_valid=0; menu_choice=0; amount_valid=0; amount=0;
+        new_pin_valid=0; new_pin=0; cancel=0;
+
+        $display("ATM demo starts. Default PIN=5, initial balance=100.");
+        repeat (2) @(negedge clk); reset=0;
+
+        // Insert card and authenticate
+        @(negedge clk); card_insert=1;
+        @(negedge clk); card_insert=0;
+        submit_pin(4'd5);
+
+        // Balance enquiry
+        choose(3'd1);
+        repeat (2) @(negedge clk);
+
+        // Withdraw 30 (balance becomes 70)
+        choose(3'd2);
+        enter_amount(8'd30);
+        repeat (2) @(negedge clk);
+
+        // Deposit 20 (balance becomes 90)
+        choose(3'd3);
+        enter_amount(8'd20);
+        repeat (2) @(negedge clk);
+
+        // Change PIN to 9
+        choose(3'd4);
+        change_pin(4'd9);
+        repeat (2) @(negedge clk);
+
+        // Cancel a menu transaction
+        choose(3'd5);
+        repeat (2) @(negedge clk);
+
+        // Eject card by reset/restarting demo (card remains in menu in this simplified model)
+        $display("Demo finished. Final balance=%0d, last cash dispensed=%0d", balance, cash_dispensed);
+        #20 $finish;
+    end
+
+    initial begin
+        $monitor("t=%0t state=%0d PINprompt=%b MENU=%b BALdisplay=%b CASH=%b DEPOSIT=%b PINchanged=%b DONE=%b insufficient=%b invalid=%b cancel=%b balance=%0d attempts=%0d",
+          $time, current_state, pin_prompt, menu_display, balance_display,
+          dispense_cash, deposit_done, pin_changed, transaction_done,
+          insufficient_funds, invalid_amount, cancelled, balance, pin_attempts_left);
+    end
+
+    initial begin
+        $dumpfile("ATM.vcd");
+        $dumpvars(0,ATM_tb);
+    end
+endmodule

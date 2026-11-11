@@ -1,0 +1,57 @@
+m255
+K4
+z2
+!s11f vlog 2020.3 2020.07, Jul 22 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/FPGA/MODELSIM/PROJECTS/ATM
+vATM
+Z1 !s110 1793682741
+!i10b 1
+!s100 BCLmZgdFe85CTziPj@X7A1
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IUT^^]N8ZIgTNg1AgYZa:O2
+R0
+w1793682039
+8ATM.v
+FATM.v
+!i122 2
+L0 7 207
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+Z4 OV;L;2020.3;71
+r1
+!s85 0
+31
+Z5 !s108 1793682741.000000
+!s107 ATM_tb.v|ATM.v|
+Z6 !s90 -reportprogress|300|ATM.v|ATM_tb.v|
+!i113 1
+Z7 tCvgOpt 0
+n@a@t@m
+vATM_tb
+R1
+!i10b 1
+!s100 =hRQB0hFDU9ezmDcck<>N0
+R2
+Ilm2iHil9eog^C`gg;D;fk1
+R0
+w1793682686
+8ATM_tb.v
+FATM_tb.v
+!i122 2
+L0 2 122
+R3
+R4
+r1
+!s85 0
+31
+R5
+Z8 !s107 ATM_tb.v|ATM.v|
+R6
+!i113 1
+R7
+n@a@t@m_tb

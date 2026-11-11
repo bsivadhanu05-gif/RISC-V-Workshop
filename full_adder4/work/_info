@@ -1,0 +1,55 @@
+m255
+K4
+z2
+!s11f vlog 2020.3 2020.07, Jul 22 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/FPGA/MODELSIM/PROJECTS/full_adder4
+vfull_adder4
+Z1 !s110 1793444186
+!i10b 1
+!s100 FV8JkAoMH951GTj82AMMT1
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IO93X`FA8Cj=j2gA@B1ofG3
+R0
+w1793442721
+8full_adder4.v
+Ffull_adder4.v
+!i122 2
+L0 3 21
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+Z4 OV;L;2020.3;71
+r1
+!s85 0
+31
+Z5 !s108 1793444185.000000
+!s107 full_adder4_tb.v|full_adder4.v|
+Z6 !s90 -reportprogress|300|full_adder4.v|full_adder4_tb.v|
+!i113 1
+Z7 tCvgOpt 0
+vfull_adder4_tb
+R1
+!i10b 1
+!s100 d8aY2aTHKYg;lK6hBW2Wo3
+R2
+I0ImK_kk?m?bgB_D[cJ[ag1
+R0
+w1793442844
+8full_adder4_tb.v
+Ffull_adder4_tb.v
+!i122 2
+L0 3 73
+R3
+R4
+r1
+!s85 0
+31
+R5
+Z8 !s107 full_adder4_tb.v|full_adder4.v|
+R6
+!i113 1
+R7
